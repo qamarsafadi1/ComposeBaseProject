@@ -25,12 +25,26 @@ class AuthViewModel @Inject constructor(
     private val application: Application
 ) : ViewModel() {
 
+
+    /**
+     * form fields for validation
+     */
+
     val mobile = savedStateHandle.getStateFlow(MOBILE, InputWrapper())
     val password = savedStateHandle.getStateFlow(PASSWORD, InputWrapper())
+
+
+    /**
+     * combine form fields to detect if all inputs are valid or not
+     */
+
     val areInputsValid = combine(mobile, password) { name, mobile ->
         name.value.isNotEmpty() && name.validationMessage.isNullOrEmpty() && mobile.value.isNotEmpty() && mobile.validationMessage.isNullOrEmpty()
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000L), false)
 
+    /**
+     * validate mobile field
+     */
     fun onMobileEntered(input: String) {
         if (input.isEmpty().not()) {
             val errorId = input.validatePhone(application.applicationContext)
@@ -45,6 +59,11 @@ class AuthViewModel @Inject constructor(
             )
         }
     }
+
+
+    /**
+     * validate password field
+     */
 
     fun onPasswordEntered(input: String) {
         if (input.isEmpty().not()) {

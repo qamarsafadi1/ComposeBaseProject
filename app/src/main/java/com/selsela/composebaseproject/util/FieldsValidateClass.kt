@@ -4,7 +4,6 @@ import android.content.Context
 import com.selsela.composebaseproject.R
 import com.selsela.composebaseproject.util.FieldsValidateConstraintsClass.isEmailValidPattern
 import com.selsela.composebaseproject.util.FieldsValidateConstraintsClass.isPasswordValidLength
-import com.selsela.composebaseproject.util.FieldsValidateConstraintsClass.isPasswordWeak
 import com.selsela.composebaseproject.util.FieldsValidateConstraintsClass.isPhoneNumberOnly
 import com.selsela.composebaseproject.util.FieldsValidateConstraintsClass.isPhoneNumberValidLength
 
