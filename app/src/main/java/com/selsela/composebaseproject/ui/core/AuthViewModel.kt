@@ -7,7 +7,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.selsela.composebaseproject.ui.theme.Red
 import com.selsela.composebaseproject.util.InputWrapper
-import com.selsela.composebaseproject.util.log
 import com.selsela.composebaseproject.util.validatePassword
 import com.selsela.composebaseproject.util.validatePhone
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -28,8 +27,8 @@ class AuthViewModel @Inject constructor(
 
     val mobile = savedStateHandle.getStateFlow(MOBILE, InputWrapper())
     val password = savedStateHandle.getStateFlow(PASSWORD, InputWrapper())
-    val areInputsValid = combine(mobile, password) { name, cardNumber ->
-        name.value.isNotEmpty() && name.validationMessage.isNullOrEmpty() && cardNumber.value.isNotEmpty() && cardNumber.validationMessage.isNullOrEmpty()
+    val areInputsValid = combine(mobile, password) { name, mobile ->
+        name.value.isNotEmpty() && name.validationMessage.isNullOrEmpty() && mobile.value.isNotEmpty() && mobile.validationMessage.isNullOrEmpty()
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000L), false)
 
     fun onMobileEntered(input: String) {

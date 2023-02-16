@@ -31,12 +31,13 @@ import com.selsela.composebaseproject.ui.theme.buttonText
 fun Button(
     onClick: () -> Unit,
     title: String,
-    icon: Int? = null,
-    buttonBg: Color = Purple40,
-    isEnabled: Boolean = true,
     modifier: Modifier = Modifier
         .width(167.dp)
         .requiredHeight(48.dp),
+    icon: Int? = null,
+    buttonBg: Color = Purple40,
+    isEnabled: Boolean = true,
+
     isLoading: Boolean = false
 ) {
     // ElasticView(onClick = { onClick() }) {
