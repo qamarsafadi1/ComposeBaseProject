@@ -1,5 +1,6 @@
 package com.selsela.composebaseproject.ui.screens.auth
 
+import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -22,15 +23,27 @@ import com.selsela.composebaseproject.R
 import com.selsela.composebaseproject.ui.core.AuthViewModel
 import com.selsela.composebaseproject.ui.core.components.Button
 import com.selsela.composebaseproject.ui.core.components.InputText
+import com.selsela.composebaseproject.util.InputWrapper
 
 @Composable
 fun LoginScreen(
     viewModel: AuthViewModel = hiltViewModel()
 ) {
+
     val mobile by viewModel.mobile.collectAsStateWithLifecycle()
     val password by viewModel.password.collectAsStateWithLifecycle()
     val areInputsValid by viewModel.areInputsValid.collectAsStateWithLifecycle()
 
+    LoginScreenContent(mobile, viewModel, password, areInputsValid)
+}
+
+@Composable
+private fun LoginScreenContent(
+    mobile: InputWrapper,
+    viewModel: AuthViewModel,
+    password: InputWrapper,
+    areInputsValid: Boolean
+) {
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -39,7 +52,9 @@ fun LoginScreen(
     ) {
 
         Column(
-            modifier = Modifier.padding(horizontal = 24.dp),
+            modifier = Modifier
+                .padding(horizontal = 24.dp)
+                .animateContentSize(),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
@@ -51,8 +66,10 @@ fun LoginScreen(
                 validationMessage = mobile.validationMessage ?: "",
                 inputType = KeyboardType.Phone,
                 borderColor = mobile.borderColor,
-                modifier = Modifier.padding(top = 16.dp),
             )
+
+            Spacer(modifier = Modifier.height(30.dp))
+
             InputText(
                 text = password.value,
                 onValueChange = viewModel::onPasswordEntered,
@@ -61,7 +78,6 @@ fun LoginScreen(
                 validationMessage = password.validationMessage ?: "",
                 inputType = KeyboardType.Phone,
                 borderColor = password.borderColor,
-                modifier = Modifier.padding(top = 16.dp),
             )
 
             Spacer(modifier = Modifier.height(30.dp))

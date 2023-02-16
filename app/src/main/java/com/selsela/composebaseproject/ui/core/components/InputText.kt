@@ -37,8 +37,8 @@ import com.selsela.composebaseproject.ui.theme.text14White
 @Composable
 fun InputText(
     text: String,
-    modifier: Modifier,
     onValueChange: (String) -> Unit,
+    modifier: Modifier = Modifier,
     hint: String = "",
     enabled: Boolean = true,
     readOnly: Boolean = false,
@@ -95,9 +95,8 @@ fun InputText(
         cursorBrush = SolidColor(cursorColor),
     )
 
-
-    Row(Modifier.fillMaxWidth()) {
-        AnimatedVisibility(visible = isValid.not()) {
+    AnimatedVisibility(visible = isValid.not()) {
+        Row(Modifier.fillMaxWidth()) {
             Text(
                 text = validationMessage,
                 style = text12,
