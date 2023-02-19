@@ -30,6 +30,7 @@ import com.selsela.composebaseproject.util.Common
 import com.selsela.composebaseproject.util.InputWrapper
 import com.selsela.composebaseproject.util.collectAsStateLifecycleAware
 import com.selsela.composebaseproject.util.getActivity
+import com.selsela.composebaseproject.util.showSuccessTop
 import com.selsela.composebaseproject.util.toJson
 import de.palm.composestateevents.EventEffect
 
@@ -67,6 +68,9 @@ fun LoginScreen(
         event = viewState.onVerify,
         onConsumed = viewModel::onVerify
     ) {
+        context.getActivity()?.showSuccessTop(
+           "${ context.getString(R.string.your_code_is)}${it.activationCode}"
+        )
         goToVerify()
     }
 

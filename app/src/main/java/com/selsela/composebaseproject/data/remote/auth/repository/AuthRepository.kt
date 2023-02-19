@@ -32,13 +32,56 @@ class AuthRepository @Inject constructor(
         val data: Flow<Resource<User>> = try {
             val body = HashMap<String, Any>()
             body["mobile"] = mobile
-         //   body["password"] = password you can use password if your request ask you to.
+            //   body["password"] = password you can use password if your request ask you to.
             body["country_id"] = "1"
             val response = api.auth(body)
             if (response.isSuccessful) {
                 preferences.user = response.body()?.user
                 if (response.body()?.user?.status != NOT_VERIFIED)
                     preferences.accessToken = response.body()?.user?.accessToken
+                handleSuccess(
+                    response.body()?.user,
+                    response.body()?.responseMessage ?: response.message()
+                )
+            } else {
+                if (response.code() == 451) {
+                    val responseUser: AuthResponse? = Gson().fromJson(
+                        response.errorBody()?.charStream(),
+                        AuthResponse::class.java
+                    )
+                    preferences.user = responseUser?.user
+                    handleSuccess(
+                        response.body()?.user,
+                        response.body()?.responseMessage ?: response.message()
+                    )
+                } else {
+                    val gson = Gson()
+                    val errorBase =
+                        gson.fromJson(response.errorBody()?.string(), ErrorBase::class.java)
+                    errorBase.statusCode = response.code()
+                    handleExceptions(errorBase)
+                }
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+            handleExceptions(e)
+        }
+        data
+    }
+
+    suspend fun verifyCode(
+        mobile: String,
+        code: String,
+    ): Flow<Resource<User>> = withContext(Dispatchers.IO) {
+        val data: Flow<Resource<User>> = try {
+            val body = HashMap<String, Any>()
+            body["mobile"] = mobile
+            body["code"] = code
+            body["country_id"] = "1"
+            val response = api.verifyCode(body)
+            if (response.isSuccessful) {
+                preferences.user = response.body()?.user
+                preferences.accessToken = response.body()?.user?.accessToken
                 handleSuccess(
                     response.body()?.user,
                     response.body()?.responseMessage ?: response.message()

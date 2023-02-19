@@ -45,7 +45,9 @@ fun NavigationHost(
             NotificationScreen()
         }
         composable(Screens.VerifyCode.name) {
-            VerifyScreen()
+            VerifyScreen(
+                goToHome = navActions::navigateToHome
+            )
         }
     }
 }

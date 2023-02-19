@@ -183,6 +183,41 @@ class AuthViewModel @Inject constructor(
                 }
         }
     }
+    fun verifyCode() {
+        viewModelScope.launch {
+            authState = authState.copy(
+                state = State.LOADING
+            )
+            repository.verifyCode(mobile.value.inputValue, code.value.inputValue)
+                .collect { result ->
+                    val authUiState = when (result.status) {
+                        Status.SUCCESS -> {
+                                AuthUiState(
+                                    state = State.SUCCESS,
+                                    onSuccess = triggered(result.message ?: ""),
+                                )
+                        }
+
+                        Status.LOADING ->
+                            AuthUiState(
+                                state = State.LOADING,
+                            )
+
+                        Status.ERROR -> AuthUiState(
+                            state = State.ERROR,
+                            onFailure = triggered(
+                                ErrorsData(
+                                    result.errors,
+                                    result.message,
+                                    result.statusCode
+                                )
+                            )
+                        )
+                    }
+                    authState = authUiState
+                }
+        }
+    }
 
 
     /**

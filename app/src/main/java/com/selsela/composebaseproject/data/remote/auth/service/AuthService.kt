@@ -16,4 +16,12 @@ interface AuthService {
         body: Map<String, Any>
     ): Response<AuthResponse>
 
+    @POST("user/verify_code")
+    @JvmSuppressWildcards
+    @FormUrlEncoded
+    suspend fun verifyCode(
+        @FieldMap
+        body: Map<String, Any>
+    ): Response<AuthResponse>
+
 }
