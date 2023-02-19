@@ -2,6 +2,7 @@ package com.selsela.composebaseproject.data.local
 
 import android.content.Context
 import android.content.SharedPreferences
+import com.selsela.composebaseproject.data.remote.auth.model.User
 import com.selsela.composebaseproject.data.remote.config.model.cities.City
 import com.selsela.composebaseproject.data.remote.config.model.config.Configurations
 import com.selsela.composebaseproject.data.remote.config.model.pages.Page
@@ -18,6 +19,8 @@ object PreferenceHelper {
     private const val CITIES = "cities"
     private const val CONDITIONS = "conditions"
     private const val PRIVACY = "privacy"
+    private const val USER = "user"
+    private const val TOKEN = "token"
     private const val ABOUT_APP = "about_app"
 
     fun customPreference(context: Context, name: String): SharedPreferences = context.getSharedPreferences(name, Context.MODE_PRIVATE)
@@ -64,6 +67,20 @@ object PreferenceHelper {
         set(value) {
             editMe {
                 it.putString(ABOUT_APP, value?.toJson())
+            }
+        }
+    var SharedPreferences.user
+        get() = getString(USER, null)?.fromJson<User>()
+        set(value) {
+            editMe {
+                it.putString(USER, value?.toJson())
+            }
+        }
+  var SharedPreferences.accessToken
+        get() = getString(TOKEN, null)
+        set(value) {
+            editMe {
+                it.putString(TOKEN, value)
             }
         }
 

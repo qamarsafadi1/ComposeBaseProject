@@ -1,8 +1,9 @@
 package com.selsela.composebaseproject.data.remote.config.model.config
 
 
+import com.google.errorprone.annotations.Keep
 import com.google.gson.annotations.SerializedName
-
+@Keep
 data class Configurations(
     @SerializedName("address")
     val address: String = "",

@@ -1,15 +1,15 @@
-package com.selsela.composebaseproject.data.remote.config.model.payment
+package com.selsela.composebaseproject.data.remote.auth.model
 
 
 import com.google.errorprone.annotations.Keep
 import com.google.gson.annotations.SerializedName
 
 @Keep
-data class PaymentResponse(
-    @SerializedName("payments")
-    val payments: List<Payment> = listOf(),
+data class AuthResponse(
     @SerializedName("response_message")
     val responseMessage: String = "",
     @SerializedName("status")
-    val status: Boolean = false
+    val status: Boolean = false,
+    @SerializedName("user")
+    val user: User = User()
 )

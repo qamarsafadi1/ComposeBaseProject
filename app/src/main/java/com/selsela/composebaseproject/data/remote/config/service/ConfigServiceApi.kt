@@ -11,18 +11,18 @@ import retrofit2.http.Query
 
 interface ConfigServiceApi {
 
-    @GET("get_configuration")
+    @GET("app/get_configuration")
     suspend fun getConfigurations(): Response<ConfigResponse>
 
-    @GET("get_payments")
+    @GET("app/get_payments")
     suspend fun getPaymentsType(): Response<PaymentResponse>
 
-    @GET("get_cities")
+    @GET("app/get_cities")
     suspend fun getCities(
         @Query("country_id") countryId: Int
     ): Response<CitiesResponse>
 
-    @GET("page/{id}")
+    @GET("app/page/{id}")
     suspend fun getPages(
         @Path("id") id: Int
     ): Response<PagesResponse>

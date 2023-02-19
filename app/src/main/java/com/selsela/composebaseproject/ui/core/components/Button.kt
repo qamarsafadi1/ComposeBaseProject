@@ -6,6 +6,7 @@ import androidx.compose.animation.scaleIn
 import androidx.compose.animation.scaleOut
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.requiredHeight
@@ -37,7 +38,6 @@ fun Button(
     icon: Int? = null,
     buttonBg: Color = Purple40,
     isEnabled: Boolean = true,
-
     isLoading: Boolean = false
 ) {
     // ElasticView(onClick = { onClick() }) {
@@ -55,19 +55,7 @@ fun Button(
         colors = ButtonDefaults.buttonColors(backgroundColor = buttonBg)
     ) {
         AnimatedVisibility(
-            visible = isLoading,
-            enter = scaleIn(),
-            exit = scaleOut()
-        ) {
-            LottieAnimationView(
-                raw = R.raw.whiteloading,
-                modifier = Modifier.size(25.dp)
-            )
-        }
-        AnimatedVisibility(
-            visible = isLoading.not(),
-            enter = scaleIn(),
-            exit = scaleOut()
+            visible = isLoading.not()
         ) {
             Row(
                 horizontalArrangement = Arrangement.Center,
@@ -84,6 +72,14 @@ fun Button(
                     )
                 }
             }
+        }
+        AnimatedVisibility(
+            visible = isLoading,
+        ) {
+            LottieAnimationView(
+                raw = R.raw.whiteloading,
+                modifier = Modifier.size(25.dp)
+            )
         }
     }
 }

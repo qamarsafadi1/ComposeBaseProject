@@ -1,8 +1,10 @@
 package com.selsela.composebaseproject.data.remote.config.model.cities
 
 
+import com.google.errorprone.annotations.Keep
 import com.google.gson.annotations.SerializedName
 
+@Keep
 data class City(
     @SerializedName("childs")
     val childs: List<Child> = listOf(),

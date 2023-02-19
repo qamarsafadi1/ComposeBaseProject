@@ -1,8 +1,10 @@
 package com.selsela.composebaseproject.data.remote.config.model.cities
 
 
+import com.google.errorprone.annotations.Keep
 import com.google.gson.annotations.SerializedName
 
+@Keep
 data class Child(
     @SerializedName("country_id")
     val countryId: Int = 0,

@@ -25,9 +25,9 @@ fun CustomTextField(
     Column {
         InputText(
             modifier = modifier,
-            text = inputWrapper.value,
+            text = inputWrapper.inputValue,
             onValueChange = {
-                onValueChange(inputWrapper.value)
+                onValueChange(inputWrapper.inputValue)
             },
             hint =stringResource(labelResId),
             isValid = inputWrapper.validationMessage != null,

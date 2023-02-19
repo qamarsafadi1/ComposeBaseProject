@@ -34,7 +34,7 @@ fun NavigationHost(
             )
         }
         composable(Screens.Login.name) {
-            LoginScreen()
+            LoginScreen(goToHome = navActions::navigateToHome)
         }
         composable(Screens.Notifications.name) {
             NotificationScreen()

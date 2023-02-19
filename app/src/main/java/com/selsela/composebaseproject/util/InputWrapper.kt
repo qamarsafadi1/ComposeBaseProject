@@ -7,7 +7,7 @@ import kotlinx.parcelize.RawValue
 
 @Parcelize
 data class InputWrapper(
-    val value: String = "",
+    val inputValue: String = "",
     val borderColor: @RawValue Color = Color.Black,
     val validationMessage: String? = null
 ) : Parcelable

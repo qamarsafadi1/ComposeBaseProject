@@ -2,6 +2,7 @@ package com.selsela.composebaseproject.util.networking
 
 import android.content.Context
 import com.selsela.composebaseproject.BaseApp.Companion.LocalData
+import com.selsela.composebaseproject.data.local.PreferenceHelper.accessToken
 import com.selsela.composebaseproject.data.local.PreferenceHelper.appLocale
 import com.selsela.composebaseproject.data.local.PreferenceHelper.fcmToken
 import com.selsela.composebaseproject.util.handleExceptions
@@ -24,10 +25,10 @@ class HeaderInterceptor @Inject constructor(
                 .header("device_key", LocalData.fcmToken ?: "")
                 .header("device_type", "android")
                 .apply {
-//                    LocalData.accessToken.let {
-//                        if (it.isNullOrEmpty().not())
-//                            addHeader("Authorization", "Bearer $it")
-//                    }
+                    LocalData.accessToken.let {
+                        if (it.isNullOrEmpty().not())
+                            addHeader("Authorization", "Bearer $it")
+                    }
                 }
                 .build()
 
