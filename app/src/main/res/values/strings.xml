@@ -18,5 +18,10 @@
     <string name="notifications">الاشعارات</string>
     <string name="mobile">رقم الجوال</string>
     <string name="password">كلمة المرور</string>
+    <string name="verify_code">رمز التحقق</string>
+    <string name="you_will_recive_code_in">سيتم استلام الرمز خلال</string>
+    <string name="confirm">تأكيد</string>
+    <string name="pleaes_enter_code">الرجاء ادخال رمز التفعيل المرسل الى رقم الجوال</string>
+    <string name="resend">اعادة ارسال</string>
 
 </resources>

@@ -1,4 +1,4 @@
-package com.selsela.composebaseproject.ui.screens.auth
+package com.selsela.composebaseproject.ui.screens.auth.view
 
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.background
@@ -24,17 +24,20 @@ import com.selsela.composebaseproject.R
 import com.selsela.composebaseproject.ui.core.components.Button
 import com.selsela.composebaseproject.ui.core.components.InputText
 import com.selsela.composebaseproject.ui.core.state.State
+import com.selsela.composebaseproject.ui.screens.auth.AuthViewModel
 import com.selsela.composebaseproject.ui.screens.auth.state.AuthUiState
 import com.selsela.composebaseproject.util.Common
 import com.selsela.composebaseproject.util.InputWrapper
 import com.selsela.composebaseproject.util.collectAsStateLifecycleAware
 import com.selsela.composebaseproject.util.getActivity
+import com.selsela.composebaseproject.util.toJson
 import de.palm.composestateevents.EventEffect
 
 @Composable
 fun LoginScreen(
     viewModel: AuthViewModel = hiltViewModel(),
-    goToHome: () -> Unit
+    goToHome: () -> Unit,
+    goToVerify: () -> Unit,
 ) {
 
     val mobile by viewModel.mobile.collectAsStateWithLifecycle()
@@ -59,6 +62,14 @@ fun LoginScreen(
     ) {
         goToHome()
     }
+
+    EventEffect(
+        event = viewState.onVerify,
+        onConsumed = viewModel::onVerify
+    ) {
+        goToVerify()
+    }
+
 
     EventEffect(
         event = viewState.onFailure,

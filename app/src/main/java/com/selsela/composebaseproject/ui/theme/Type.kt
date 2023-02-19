@@ -57,3 +57,29 @@ val text12 = TextStyle(
         trim = LineHeightStyle.Trim.Both
     )
 )
+
+val text18 = TextStyle(
+    fontFamily = fonts,
+    fontWeight = FontWeight.Bold,
+    fontSize = 18.sp,
+    color = Color.Black
+)
+val text11 = TextStyle(
+    fontFamily = fonts,
+    fontWeight = FontWeight.SemiBold,
+    fontSize = 11.sp,
+    color = Color.Black.copy(0.85f)
+)
+
+val text14WhiteCenter = TextStyle(
+    fontFamily = fonts,
+    fontWeight = FontWeight.SemiBold,
+    fontSize = 14.sp,
+    color = Color.White,
+    lineHeight = 0.sp,
+    letterSpacing = 0.sp,
+    lineHeightStyle = LineHeightStyle(
+        alignment = LineHeightStyle.Alignment.Center,
+        trim = LineHeightStyle.Trim.None
+    ),
+)

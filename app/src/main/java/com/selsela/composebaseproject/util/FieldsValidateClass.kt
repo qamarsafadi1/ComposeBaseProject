@@ -18,6 +18,14 @@ fun String.validateEmail(mContext: Context,fieldName: String): String {
     return message
 }
 
+fun String.validateRequired(mContext: Context,fieldName: String): String {
+    var message = ""
+    if (this == "") {
+        message = mContext.getString(R.string.valid_required2) + " " + fieldName
+    }
+    return message
+}
+
 
 fun String.validatePhone(mContext: Context,fieldName: String): String {
     var message = ""

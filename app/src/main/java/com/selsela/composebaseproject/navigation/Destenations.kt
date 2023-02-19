@@ -10,6 +10,7 @@ enum class Screens(
 ) {
     Splash,
     Login(title = R.string.login),
+    VerifyCode(title = R.string.verify_code),
     Home(title = R.string.home),
     Notifications(title = R.string.notifications)
 }
@@ -27,6 +28,10 @@ class NavigationActions(private val navController: NavController) {
 
     fun navigateToNotifications() {
         navController.navigate(Screens.Notifications.name)
+    }
+
+    fun navigateToVerify() {
+        navController.navigate(Screens.VerifyCode.name)
     }
 
     fun navigateToOrderDetails(id: Int) {

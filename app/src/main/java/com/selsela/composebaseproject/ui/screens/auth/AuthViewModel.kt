@@ -1,10 +1,13 @@
 package com.selsela.composebaseproject.ui.screens.auth
 
 import android.app.Application
+import android.content.SharedPreferences
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.selsela.composebaseproject.R
+import com.selsela.composebaseproject.data.local.PreferenceHelper.user
 import com.selsela.composebaseproject.data.remote.auth.repository.AuthRepository
 import com.selsela.composebaseproject.ui.core.state.State
 import com.selsela.composebaseproject.ui.screens.auth.state.AuthUiState
@@ -15,6 +18,7 @@ import com.selsela.composebaseproject.util.networking.model.ErrorsData
 import com.selsela.composebaseproject.util.networking.model.Status
 import com.selsela.composebaseproject.util.validatePassword
 import com.selsela.composebaseproject.util.validatePhone
+import com.selsela.composebaseproject.util.validateRequired
 import dagger.hilt.android.lifecycle.HiltViewModel
 import de.palm.composestateevents.consumed
 import de.palm.composestateevents.triggered
@@ -31,20 +35,22 @@ import javax.inject.Inject
 
 const val MOBILE = "mobile"
 const val PASSWORD = "password"
+const val CODE = "code"
 
 @HiltViewModel
 class AuthViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle,
     private val repository: AuthRepository,
+    preferences: SharedPreferences,
     private val application: Application
 ) : ViewModel() {
 
-
     /**
-     * form fields for validation
+     * Form fields for validation
      */
 
-    val mobile = savedStateHandle.getStateFlow(MOBILE, InputWrapper())
+    val mobile = savedStateHandle.getStateFlow(MOBILE, InputWrapper(inputValue = if (preferences.user != null) preferences.user?.mobile ?: "" else ""))
+    val code = savedStateHandle.getStateFlow(CODE, InputWrapper())
     val password = savedStateHandle.getStateFlow(PASSWORD, InputWrapper())
 
     /**
@@ -59,15 +65,19 @@ class AuthViewModel @Inject constructor(
         }
 
     /**
-     * combine form fields to detect if all inputs are valid or not
+     * Combine form fields to detect if all inputs are valid or not
      */
 
-    val areInputsValid = combine(mobile, password) { name, mobile ->
-        name.inputValue.isNotEmpty() && name.validationMessage.isNullOrEmpty() && mobile.inputValue.isNotEmpty() && mobile.validationMessage.isNullOrEmpty()
+    val areInputsValid = combine(mobile, password) { mobile, password ->
+        mobile.inputValue.isNotEmpty() && mobile.validationMessage.isNullOrEmpty() && password.inputValue.isNotEmpty() && password.validationMessage.isNullOrEmpty()
+    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000L), false)
+
+    val isCodeValid = combine(mobile,code) { mobile, code ->
+        code.inputValue.isNotEmpty() && code.validationMessage.isNullOrEmpty() && code.inputValue.length == 4  && mobile.inputValue.isNotEmpty() && mobile.validationMessage.isNullOrEmpty()
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000L), false)
 
     /**
-     * validate mobile field
+     * Validate mobile field
      */
     fun onMobileEntered(input: String) {
         if (input.isEmpty().not()) {
@@ -85,7 +95,7 @@ class AuthViewModel @Inject constructor(
     }
 
     /**
-     * validate password field
+     * Validate password field
      */
 
     fun onPasswordEntered(input: String) {
@@ -103,6 +113,34 @@ class AuthViewModel @Inject constructor(
         }
     }
 
+    /**
+     * Validate code field
+     */
+
+    fun onCodeEntered(input: String, isOtpFilled: Boolean) {
+        if (input.isEmpty().not() || isOtpFilled.not()) {
+            val errorId = input.validateRequired(
+                application.applicationContext, application.applicationContext.getString(
+                    R.string.verify_code
+                )
+            )
+            savedStateHandle[CODE] = code.value.copy(
+                inputValue = input, validationMessage = errorId,
+                borderColor = if (errorId.isNotEmpty()) Red else Color.Black
+            )
+        } else {
+            savedStateHandle[CODE] = code.value.copy(
+                inputValue = input, validationMessage = null,
+                borderColor = Color.Black
+            )
+        }
+    }
+
+
+    /**
+     * API Requests
+     */
+
     fun login() {
         viewModelScope.launch {
             authState = authState.copy(
@@ -112,13 +150,17 @@ class AuthViewModel @Inject constructor(
                 .collect { result ->
                     val authUiState = when (result.status) {
                         Status.SUCCESS -> {
-                            AuthUiState(
-                                state = State.SUCCESS,
-                                onSuccess = triggered(result.message ?: ""),
-                                onVerify = if (result.data?.status == NOT_VERIFIED)
-                                    triggered(result.data)
-                                else consumed()
-                            )
+                            if (result.data?.status == NOT_VERIFIED) {
+                                AuthUiState(
+                                    state = State.SUCCESS,
+                                    onVerify = triggered(result.data)
+                                )
+                            } else {
+                                AuthUiState(
+                                    state = State.SUCCESS,
+                                    onSuccess = triggered(result.message ?: ""),
+                                )
+                            }
                         }
 
                         Status.LOADING ->
@@ -144,11 +186,15 @@ class AuthViewModel @Inject constructor(
 
 
     /**
-     * reset handlers when single event
+     * Reset handlers when single event
      */
 
     fun onSuccess() {
         authState = authState.copy(onSuccess = consumed())
+    }
+
+    fun onVerify() {
+        authState = authState.copy(onVerify = consumed())
     }
 
     fun onFailure() {
