@@ -4,6 +4,7 @@ import android.app.Application
 import android.content.SharedPreferences
 import com.selsela.composebaseproject.data.local.PreferenceHelper
 import com.selsela.composebaseproject.data.remote.auth.service.AuthService
+import com.selsela.composebaseproject.data.remote.categories.service.CategoryService
 import com.selsela.composebaseproject.data.remote.config.service.ConfigServiceApi
 import com.selsela.composebaseproject.util.networking.HeaderInterceptor
 import com.selsela.composebaseproject.util.networking.RetrofitBuilder
@@ -32,15 +33,21 @@ object NetworkingModule {
 
     @Provides
     @Singleton
-    fun provideConfigApi(retrofit: Retrofit): ConfigServiceApi = retrofit.create(ConfigServiceApi::class.java)
+    fun provideConfigApi(retrofit: Retrofit): ConfigServiceApi =
+        retrofit.create(ConfigServiceApi::class.java)
 
-  @Provides
+    @Provides
     @Singleton
     fun provideAuthApi(retrofit: Retrofit): AuthService = retrofit.create(AuthService::class.java)
+
+    @Provides
+    @Singleton
+    fun provideCategoryApi(retrofit: Retrofit): CategoryService = retrofit.create(CategoryService::class.java)
 
 
     @Provides
     @Singleton
-    fun provideLocalPreference( application: Application): SharedPreferences = PreferenceHelper.customPreference(application.applicationContext,"APP_PREFERENCE")
+    fun provideLocalPreference(application: Application): SharedPreferences =
+        PreferenceHelper.customPreference(application.applicationContext, "APP_PREFERENCE")
 
 }

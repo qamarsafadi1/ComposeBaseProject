@@ -24,5 +24,7 @@
     <string name="pleaes_enter_code">الرجاء ادخال رمز التفعيل المرسل الى رقم الجوال</string>
     <string name="resend">اعادة ارسال</string>
     <string name="your_code_is">"رمز التفعيل الخاص بك هو : "</string>
+    <string name="categories">تصنيفات</string>
+    <string name="no_categories_found">لا يوجد تصنيفات حاليًا</string>
 
 </resources>

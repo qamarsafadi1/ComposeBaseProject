@@ -3,6 +3,8 @@ package com.selsela.composebaseproject.di
 import android.content.SharedPreferences
 import com.selsela.composebaseproject.data.remote.auth.repository.AuthRepository
 import com.selsela.composebaseproject.data.remote.auth.service.AuthService
+import com.selsela.composebaseproject.data.remote.categories.repository.CategoryRepository
+import com.selsela.composebaseproject.data.remote.categories.service.CategoryService
 import com.selsela.composebaseproject.data.remote.config.repository.ConfigurationsRepository
 import com.selsela.composebaseproject.data.remote.config.service.ConfigServiceApi
 import dagger.Module
@@ -20,7 +22,7 @@ object RepositoryModule {
         apiService: ConfigServiceApi,
         preferences: SharedPreferences
     ): ConfigurationsRepository {
-        return ConfigurationsRepository(apiService,preferences)
+        return ConfigurationsRepository(apiService, preferences)
     }
 
     @Provides
@@ -29,6 +31,14 @@ object RepositoryModule {
         apiService: AuthService,
         preferences: SharedPreferences
     ): AuthRepository {
-        return AuthRepository(apiService,preferences)
+        return AuthRepository(apiService, preferences)
+    }
+
+    @Provides
+    @Singleton
+    fun providerCategoryRepository(
+        apiService: CategoryService,
+    ): CategoryRepository {
+        return CategoryRepository(apiService)
     }
 }
