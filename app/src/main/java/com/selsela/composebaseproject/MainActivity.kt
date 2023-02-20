@@ -18,6 +18,7 @@ import com.selsela.composebaseproject.navigation.NavigationHost
 import com.selsela.composebaseproject.navigation.Screens
 import com.selsela.composebaseproject.ui.core.components.TopBar
 import com.selsela.composebaseproject.ui.theme.ComposeBaseProjectTheme
+import com.selsela.composebaseproject.util.log
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -37,8 +38,9 @@ class MainActivity : AppCompatActivity() {
     private fun App(modifier: Modifier = Modifier) {
         val navController = rememberNavController()
         val backStackEntry by navController.currentBackStackEntryAsState()
+        backStackEntry?.destination?.route?.log("backStackEntry?.destination?.route")
         val currentScreen = Screens.valueOf(
-            backStackEntry?.destination?.route ?: Screens.Splash.name
+            backStackEntry?.destination?.route?.substringBefore("/") ?: Screens.Splash.name
         )
 
         Surface(

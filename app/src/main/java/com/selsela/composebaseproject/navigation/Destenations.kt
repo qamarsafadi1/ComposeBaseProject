@@ -4,6 +4,7 @@ import androidx.annotation.StringRes
 import androidx.navigation.NavController
 import com.selsela.composebaseproject.R
 import com.selsela.composebaseproject.navigation.Navigation.navigateWithClearBackStack
+import com.selsela.composebaseproject.util.toJson
 
 enum class Screens(
     @StringRes val title: Int? = null
@@ -12,7 +13,8 @@ enum class Screens(
     Login(title = R.string.login),
     VerifyCode(title = R.string.verify_code),
     Home(title = R.string.home),
-    Categories(title = R.string.categories)
+    Categories(title = R.string.categories),
+    Details(title = R.string.details)
 }
 
 class NavigationActions(private val navController: NavController) {
@@ -34,8 +36,9 @@ class NavigationActions(private val navController: NavController) {
         navController.navigate(Screens.VerifyCode.name)
     }
 
-    fun navigateToOrderDetails(id: Int) {
-        navController.navigate("notifications/${id}")
+    fun navigateToCategoryDetails(index: Int) {
+        navController.navigate(Screens.Details.name+"/$index")
+
     }
 
 }

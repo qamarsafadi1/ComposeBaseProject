@@ -26,5 +26,6 @@
     <string name="your_code_is">"رمز التفعيل الخاص بك هو : "</string>
     <string name="categories">تصنيفات</string>
     <string name="no_categories_found">لا يوجد تصنيفات حاليًا</string>
+    <string name="details">تفاصيل</string>
 
 </resources>

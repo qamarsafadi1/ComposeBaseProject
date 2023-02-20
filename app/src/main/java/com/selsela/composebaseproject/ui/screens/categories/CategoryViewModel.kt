@@ -72,5 +72,15 @@ class CategoryViewModel @Inject constructor(
         }
     }
 
+    fun getCategoriesDetails(index: Int) {
+        val categoriesUiState =
+            CategoryUiState(
+                state = State.SUCCESS,
+                category = state.categories?.get(index),
+                categories = state.categories
+            )
+        state = categoriesUiState
+    }
+
 
 }

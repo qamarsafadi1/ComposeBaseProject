@@ -6,7 +6,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -30,7 +30,8 @@ import com.selsela.composebaseproject.util.getActivity
 
 @Composable
 fun CategoriesScreen(
-    viewModel: CategoryViewModel = hiltViewModel()
+    viewModel: CategoryViewModel = hiltViewModel(),
+    onClick: (Int) -> Unit
 ) {
     val viewState: CategoryUiState by viewModel.uiState.collectAsStateLifecycleAware(CategoryUiState())
     val context = LocalContext.current
@@ -50,7 +51,7 @@ fun CategoriesScreen(
 
     when (viewState.state) {
         State.IDLE, State.LOADING -> LoadingView()
-        State.SUCCESS -> CategoriesList(categories = viewState.categories)
+        State.SUCCESS -> CategoriesList(categories = viewState.categories, onClick)
         State.ERROR -> {
             viewState.error.let {
                 Common.handleErrors(
@@ -64,7 +65,7 @@ fun CategoriesScreen(
 }
 
 @Composable
-private fun CategoriesList(categories: List<Service>?) {
+private fun CategoriesList(categories: List<Service>?, onClick: (Int) -> Unit) {
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -72,9 +73,13 @@ private fun CategoriesList(categories: List<Service>?) {
     ) {
         if (categories.isNullOrEmpty().not()) {
             LazyColumn {
-                items(categories!!,
-                    key = { it.id }) {
-                    CategoryItem(it)
+                itemsIndexed(categories!!,
+                    key = { _, it ->
+                        it.id
+                    }) { index, it ->
+                    CategoryItem(it) {
+                        onClick(index)
+                    }
                     Spacer(modifier = Modifier.height(10.dp))
                 }
             }

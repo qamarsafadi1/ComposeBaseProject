@@ -9,6 +9,7 @@ import com.selsela.composebaseproject.util.networking.model.ErrorsData
 data class CategoryUiState(
     val state: State = State.IDLE,
     val categories: List<Service>? = null,
+    val category: Service? = null,
     val error: ErrorsData? = null,
 
 )
