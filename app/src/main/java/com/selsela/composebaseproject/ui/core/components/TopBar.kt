@@ -12,7 +12,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import com.selsela.composebaseproject.R
 import com.selsela.composebaseproject.navigation.Navigation
 import com.selsela.composebaseproject.navigation.Screens
 
@@ -39,7 +41,7 @@ fun TopBar(
                 if (canNavigateBack) {
                     IconButton(onClick = navigateUp) {
                         Icon(
-                            imageVector = Icons.Filled.ArrowBack,
+                            painter = painterResource(id = R.drawable.baseline_arrow_back_24),
                             contentDescription = "back button",
                             modifier = Modifier.rotate(180f)
                         )

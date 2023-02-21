@@ -30,5 +30,7 @@
     <string name="data">عرض البيانات</string>
     <string name="change_langauge">تغيير اللغة</string>
     <string name="auth">تسجيل</string>
+    <string name="app_language">لغة التطبيق</string>
+    <string name="confirm_lbl">تأكيد</string>
 
 </resources>

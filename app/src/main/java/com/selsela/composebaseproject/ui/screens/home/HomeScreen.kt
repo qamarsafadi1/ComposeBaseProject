@@ -7,7 +7,11 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.ModalBottomSheetValue
+import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -19,13 +23,17 @@ import com.selsela.composebaseproject.R
 import com.selsela.composebaseproject.data.local.PreferenceHelper.appLocale
 import com.selsela.composebaseproject.data.local.PreferenceHelper.configurations
 import com.selsela.composebaseproject.ui.core.components.Button
+import com.selsela.composebaseproject.ui.core.components.language.LanguageSheet
 import com.selsela.composebaseproject.util.LocalUtils.setLocale
 import com.selsela.composebaseproject.util.log
+import kotlinx.coroutines.launch
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun HomeScreen(
     viewModel: HomeViewModel = hiltViewModel(),
     onDataClick: () -> Unit,
+    onChangeLanguageClick: () -> Unit,
     onAuthClick: () -> Unit,
 ) {
     Box(
@@ -42,12 +50,7 @@ fun HomeScreen(
             )
             Spacer(modifier = Modifier.height(10.dp))
             Button(
-                onClick = {
-                    if (LocalData.appLocale == "ar")
-                        context.setLocale("en")
-                    else context.setLocale("ar")
-
-                },
+                onClick = onChangeLanguageClick,
                 title = stringResource(R.string.change_langauge)
             )
             if (viewModel.userLoggedIn.value.not()) {

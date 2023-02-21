@@ -22,6 +22,7 @@ import com.selsela.composebaseproject.ui.screens.splash.SplashScreen
 fun NavigationHost(
     modifier: Modifier = Modifier,
     navController: NavHostController = rememberNavController(),
+    openSheet: (BottomSheetScreen) -> Unit,
     startDestination: String = Screens.Splash.name,
     navActions: NavigationActions = remember(navController) {
         NavigationActions(navController)
@@ -36,7 +37,8 @@ fun NavigationHost(
         composable(Screens.Home.name) {
             HomeScreen(
                 onDataClick = navActions::navigateToCategories,
-                onAuthClick = navActions::navigateToLogin
+                onAuthClick = navActions::navigateToLogin,
+                onChangeLanguageClick = { openSheet(BottomSheetScreen.LangaugeSheet) }
             )
         }
         composable(Screens.Login.name) {

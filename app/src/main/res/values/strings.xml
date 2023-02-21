@@ -14,8 +14,8 @@
     <string name="not_start_with_zero">لا يمكن للرقم ان يبدأ بصفر</string>
     <string name="unvalid_code">رمز التفعيل غير صحيح</string>
     <string name="login">تسجيل الدخول</string>
-    <string name="home">الرئيسية</string>
-    <string name="notifications">الاشعارات</string>
+    <string name="home">Home</string>
+    <string name="notifications">Notifications</string>
     <string name="mobile">رقم الجوال</string>
     <string name="password">كلمة المرور</string>
     <string name="verify_code">رمز التحقق</string>
@@ -30,5 +30,7 @@
     <string name="data">Data</string>
     <string name="change_langauge">Change Langauge</string>
     <string name="auth">Auth</string>
+    <string name="app_language">لغة التطبيق</string>
+    <string name="confirm_lbl">تأكيد</string>
 
 </resources>
