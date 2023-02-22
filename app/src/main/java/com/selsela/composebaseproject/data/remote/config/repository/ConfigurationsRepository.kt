@@ -9,15 +9,21 @@ import com.selsela.composebaseproject.data.local.PreferenceHelper.configurations
 import com.selsela.composebaseproject.data.local.PreferenceHelper.payments
 import com.selsela.composebaseproject.data.local.PreferenceHelper.privacy
 import com.selsela.composebaseproject.data.remote.config.model.cities.City
+import com.selsela.composebaseproject.data.remote.config.model.config.ConfigResponse
 import com.selsela.composebaseproject.data.remote.config.model.config.Configurations
 import com.selsela.composebaseproject.data.remote.config.model.pages.Page
 import com.selsela.composebaseproject.data.remote.config.model.payment.Payment
 import com.selsela.composebaseproject.data.remote.config.service.ConfigApi
 import com.selsela.composebaseproject.data.remote.config.service.ConfigServiceApi
+import com.selsela.composebaseproject.util.fromJson
 import com.selsela.composebaseproject.util.handleExceptions
 import com.selsela.composebaseproject.util.handleSuccess
+import com.selsela.composebaseproject.util.log
 import com.selsela.composebaseproject.util.networking.model.ErrorBase
 import com.selsela.composebaseproject.util.networking.model.Resource
+import io.ktor.client.call.body
+import io.ktor.client.statement.bodyAsText
+import io.ktor.http.HttpStatusCode
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
@@ -30,11 +36,12 @@ class ConfigurationsRepository @Inject constructor(
     suspend fun getConfigurations(): Flow<Resource<Configurations>> = withContext(Dispatchers.IO) {
         val data: Flow<Resource<Configurations>> = try {
             val response = api.getConfig()
-            if (response.status) {
-                preferences.configurations = response.configurations
+            val body = response.body<ConfigResponse?>()
+            if (response.status == HttpStatusCode.Forbidden) {
+                preferences.configurations = body?.configurations
                 handleSuccess(
-                    response.configurations,
-                    response.responseMessage
+                    body?.configurations,
+                    body?.responseMessage
                 )
             } else {
                 val gson = Gson()
