@@ -23,11 +23,11 @@ class ConfigViewModel @Inject constructor(
     private fun getConfig() {
         viewModelScope.launch {
             repository.getConfigurations()
-            repository.getPaymentsType()
-            repository.getCities()
-            repository.getConditions()
-            repository.getPrivacy()
-            repository.getAboutApp()
+//            repository.getPaymentsType()
+//            repository.getCities()
+//            repository.getConditions()
+//            repository.getPrivacy()
+//            repository.getAboutApp()
         }
     }
 }

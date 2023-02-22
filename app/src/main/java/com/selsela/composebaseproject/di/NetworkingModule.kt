@@ -5,14 +5,21 @@ import android.content.SharedPreferences
 import com.selsela.composebaseproject.data.local.PreferenceHelper
 import com.selsela.composebaseproject.data.remote.auth.service.AuthService
 import com.selsela.composebaseproject.data.remote.categories.service.CategoryService
+import com.selsela.composebaseproject.data.remote.config.service.ConfigApi
 import com.selsela.composebaseproject.data.remote.config.service.ConfigServiceApi
 import com.selsela.composebaseproject.util.networking.HeaderInterceptor
 import com.selsela.composebaseproject.util.networking.RetrofitBuilder
+import com.selsela.composebaseproject.util.networking.ktorHttpClient
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import io.ktor.client.HttpClient
+import io.ktor.client.engine.android.Android
+import io.ktor.client.features.json.JsonFeature
+import io.ktor.client.features.json.serializer.KotlinxSerializer
+import io.ktor.client.features.logging.LogLevel
+import io.ktor.client.features.logging.Logging
 import retrofit2.Retrofit
 import javax.inject.Singleton
 
@@ -35,7 +42,10 @@ object NetworkingModule {
     @Singleton
     fun provideConfigApi(retrofit: Retrofit): ConfigServiceApi =
         retrofit.create(ConfigServiceApi::class.java)
-
+    @Provides
+    @Singleton
+    fun provideConfigurationApi(): ConfigApi =
+        ConfigApi(ktorHttpClient)
     @Provides
     @Singleton
     fun provideAuthApi(retrofit: Retrofit): AuthService = retrofit.create(AuthService::class.java)

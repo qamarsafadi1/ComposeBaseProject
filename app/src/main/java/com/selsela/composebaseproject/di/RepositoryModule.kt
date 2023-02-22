@@ -6,6 +6,7 @@ import com.selsela.composebaseproject.data.remote.auth.service.AuthService
 import com.selsela.composebaseproject.data.remote.categories.repository.CategoryRepository
 import com.selsela.composebaseproject.data.remote.categories.service.CategoryService
 import com.selsela.composebaseproject.data.remote.config.repository.ConfigurationsRepository
+import com.selsela.composebaseproject.data.remote.config.service.ConfigApi
 import com.selsela.composebaseproject.data.remote.config.service.ConfigServiceApi
 import dagger.Module
 import dagger.Provides
@@ -19,7 +20,7 @@ object RepositoryModule {
     @Provides
     @Singleton
     fun providerConfigurationsRepository(
-        apiService: ConfigServiceApi,
+        apiService: ConfigApi,
         preferences: SharedPreferences
     ): ConfigurationsRepository {
         return ConfigurationsRepository(apiService, preferences)

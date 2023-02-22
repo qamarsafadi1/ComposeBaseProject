@@ -3,10 +3,12 @@ package com.selsela.composebaseproject.util
 import android.Manifest
 import android.app.Activity
 import android.app.AlertDialog
+import android.content.BroadcastReceiver
 import android.content.ClipData
 import android.content.Context
 import android.content.ContextWrapper
 import android.content.Intent
+import android.content.IntentFilter
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -40,6 +42,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.flowWithLifecycle
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.fondesa.kpermissions.extension.permissionsBuilder
 import com.fondesa.kpermissions.extension.send
 import com.google.android.gms.location.LocationServices
@@ -49,6 +52,7 @@ import com.google.firebase.messaging.FirebaseMessaging
 import com.selsela.composebaseproject.BaseApp.Companion.LocalData
 import com.selsela.composebaseproject.R
 import com.selsela.composebaseproject.data.local.PreferenceHelper.fcmToken
+import com.selsela.composebaseproject.data.notification.NotificationReceiver
 import com.selsela.composebaseproject.util.FileHandler.Companion.compressImage
 import com.selsela.composebaseproject.util.FileHelper.Companion.scaleBitmap
 import com.selsela.composebaseproject.util.networking.model.ErrorBase
@@ -285,9 +289,6 @@ fun uploadImages(
     images: ActivityResultLauncher<Intent>,
     isMultiple: Boolean
 ) {
-//    permissionsBuilder(
-//        Manifest.permission.READ_EXTERNAL_STORAGE
-//    ).build().send {
     mActivity.getActivity()?.permissionsBuilder(
         Manifest.permission.CAMERA
     )?.build()?.send {
@@ -357,38 +358,18 @@ fun mStartActivityForResultMultiple(
     context: Context,
     lambda: (List<File>?) -> Unit
 ): ActivityResultLauncher<Intent> {
-    val imges: MutableList<File>? = mutableListOf()
+    val imges: MutableList<File> = mutableListOf()
 
     return rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
-        "heeere".log("absoulutePath")
         val data = result.data
         if (result.resultCode == Activity.RESULT_OK) {
             try {
                 if (data != null && data.data != null) {
                     val image = FileHelper.getImage(data.data, context)
-                    image?.let { it1 -> imges?.add(it1) }
+                    image?.let { it1 -> imges.add(it1) }
                     lambda(imges)
-
-                    /*   if (bitmap != null && Common.validImageSize(
-                               FileUtils.getFile(
-                                   requireContext(),
-                                   data.data!!
-                               )
-                           )
-                       ) {
-                           lambda(image, bitmap)
-                           *//*  viewModel.file = image
-                       binding?.imageIv?.setImageBitmap(bitmap)*//*
-                        //   viewModel.bitmaps.add(bitmap)
-                    } else {
-                        context?.showError(getString(R.string.msg_size_exced_max))
-
-                    }*/
                 } else if (data != null && data.clipData != null) {
-
                     val mClipData: ClipData? = data.clipData
-                    var imageValidSize = true
-
                     val count = mClipData?.itemCount ?: 0
                     if (mClipData != null)
                         for (i in 0 until count) {
@@ -398,16 +379,10 @@ fun mStartActivityForResultMultiple(
                                 selectedImage?.log()
                                 val filename = FileUtils.getFileName(context, imageUri)
                                 val file = FileUtils.createFile(context, imageUri, filename)
-                                file.let { it1 -> imges?.add(it1) }
-                                imges?.size?.log("viewModel.photosImg")
+                                file.let { it1 -> imges.add(it1) }
                             }
                         }
                     lambda(imges)
-                    /*                    if (imageValidSize.not()) {
-                                            context?.showError(getString(R.string.msg_size_exced_max))
-
-                                        }*/
-
                 } else if (absoulutePath != null) {
                     BitmapFactory.Options().apply {
                         // Get the dimensions of the bitmap
@@ -420,29 +395,12 @@ fun mStartActivityForResultMultiple(
                         )
                         image.let { it1 ->
                             if (it1 != null) {
-                                imges?.add(it1)
+                                imges.add(it1)
                             }
                         }
                     }
                     lambda(imges)
                 }
-
-
-                /* else if (data.extras?.get("data") != null) {
-                        val image = FileHelper.getBitmapImage(
-                            mActivity,
-                            data.extras?.get("data")!! as Bitmap,
-                            requireContext()
-                        )
-                        val bitmap = data.extras?.get("data")!! as Bitmap
-                        if (Common.validImageSize(bitmap)) {
-                            lambda(image, bitmap)
-                            //   viewModel.bitmaps.add(bitmap)
-                        } else {
-                            context?.showError(getString(R.string.msg_size_exced_max))
-
-                        }
-                    } */
             } catch (ex: Exception) {
                 ex.printStackTrace()
             }
@@ -530,6 +488,24 @@ fun receiveToken() {
             LocalData.fcmToken = token
             LocalData.fcmToken?.log("Token")
         })
+}
+
+@Composable
+fun BroadcastReceiver(
+    context: Context,
+    action: String,
+    onReceived: (Intent) -> Unit
+) {
+    var receiver: NotificationReceiver? = null
+    receiver = object : NotificationReceiver() {
+        override fun onReceive(context: Context, intent: Intent) {
+            onReceived(intent)
+            receiver?.let { LocalBroadcastManager.getInstance(context).unregisterReceiver(it) }
+        }
+    }
+    LocalBroadcastManager.getInstance(context).registerReceiver(
+        receiver, IntentFilter(action)
+    )
 }
 
 

@@ -3,48 +3,52 @@ package com.selsela.composebaseproject.data.remote.config.model.config
 
 import com.google.errorprone.annotations.Keep
 import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
+
 @Keep
+@Serializable
 data class Configurations(
-    @SerializedName("address")
+    @SerialName("address")
     val address: String = "",
-    @SerializedName("address_en")
+    @SerialName("address_en")
     val addressEn: String = "",
-    @SerializedName("android")
+    @SerialName("android")
     val android: String = "",
-    @SerializedName("android_version")
+    @SerialName("android_version")
     val androidVersion: String = "",
-    @SerializedName("app_status_android")
+    @SerialName("app_status_android")
     val appStatusAndroid: String = "",
-    @SerializedName("app_status_ios")
+    @SerialName("app_status_ios")
     val appStatusIos: String = "",
-    @SerializedName("currency_ar")
+    @SerialName("currency_ar")
     val currencyAr: String = "",
-    @SerializedName("currency_en")
+    @SerialName("currency_en")
     val currencyEn: String = "",
-    @SerializedName("email")
+    @SerialName("email")
     val email: String = "",
-    @SerializedName("facebook")
+    @SerialName("facebook")
     val facebook: String = "",
-    @SerializedName("instagram")
+    @SerialName("instagram")
     val instagram: String = "",
-    @SerializedName("ios")
+    @SerialName("ios")
     val ios: String = "",
-    @SerializedName("ios_version")
+    @SerialName("ios_version")
     val iosVersion: String = "",
-    @SerializedName("linked_in")
+    @SerialName("linked_in")
     val linkedIn: String = "",
-    @SerializedName("mobile")
+    @SerialName("mobile")
     val mobile: String = "",
-    @SerializedName("name_ar")
+    @SerialName("name_ar")
     val nameAr: String = "",
-    @SerializedName("name_en")
+    @SerialName("name_en")
     val nameEn: String = "",
-    @SerializedName("twitter")
+    @SerialName("twitter")
     val twitter: String = "",
-    @SerializedName("update_android")
+    @SerialName("update_android")
     val updateAndroid: String = "",
-    @SerializedName("update_ios")
+    @SerialName("update_ios")
     val updateIos: String = "",
-    @SerializedName("whatsapp")
+    @SerialName("whatsapp")
     val whatsapp: String = ""
 )
