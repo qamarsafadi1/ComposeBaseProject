@@ -29,6 +29,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.core.view.WindowCompat
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.selsela.composebaseproject.navigation.BottomSheetScreen
@@ -54,11 +55,9 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-
     @OptIn(ExperimentalMaterialApi::class)
     @Composable
     private fun App(modifier: Modifier = Modifier) {
-
         val scope = rememberCoroutineScope()
         val navController = rememberNavController()
         val backStackEntry by navController.currentBackStackEntryAsState()
@@ -90,7 +89,6 @@ class MainActivity : AppCompatActivity() {
             color = MaterialTheme.colorScheme.background
         ) {
             Box(modifier = Modifier.fillMaxSize()) {
-
                 Scaffold(topBar = {
                     TopBar(
                         currentScreen = currentScreen,
@@ -118,7 +116,6 @@ class MainActivity : AppCompatActivity() {
                     sheetElevation = 10.dp
                 ) {}
             }
-
         }
     }
 

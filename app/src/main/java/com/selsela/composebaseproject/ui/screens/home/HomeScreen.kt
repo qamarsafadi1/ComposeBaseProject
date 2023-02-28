@@ -28,7 +28,6 @@ import com.selsela.composebaseproject.util.LocalUtils.setLocale
 import com.selsela.composebaseproject.util.log
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun HomeScreen(
     viewModel: HomeViewModel = hiltViewModel(),
@@ -40,7 +39,6 @@ fun HomeScreen(
         Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
     ) {
-        val context = LocalContext.current
         Column(
             verticalArrangement = Arrangement.Center
         ) {
@@ -58,6 +56,12 @@ fun HomeScreen(
                 Button(
                     onClick = onAuthClick,
                     title = stringResource(R.string.auth)
+                )
+            } else {
+                Spacer(modifier = Modifier.height(10.dp))
+                Button(
+                    onClick = onChangeLanguageClick,
+                    title = stringResource(R.string.pagination_data)
                 )
             }
         }

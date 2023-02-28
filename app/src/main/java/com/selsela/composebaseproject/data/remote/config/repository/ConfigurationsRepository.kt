@@ -33,15 +33,14 @@ class ConfigurationsRepository @Inject constructor(
     private val api: ConfigApi,
     private val preferences: SharedPreferences
 ) {
-    suspend fun getConfigurations(): Flow<Resource<Configurations>> = withContext(Dispatchers.IO) {
-        val data: Flow<Resource<Configurations>> = try {
+    suspend fun getConfigurations(): Flow<Resource<String>> = withContext(Dispatchers.IO) {
+        val data: Flow<Resource<String>> = try {
             val response = api.getConfig()
-            val body = response.body<ConfigResponse?>()
-            if (response.status == HttpStatusCode.Forbidden) {
-                preferences.configurations = body?.configurations
+            val body = response.bodyAsText()
+            if (response.status == HttpStatusCode.OK) {
                 handleSuccess(
-                    body?.configurations,
-                    body?.responseMessage
+                    body,
+                    body
                 )
             } else {
                 val gson = Gson()

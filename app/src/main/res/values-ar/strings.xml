@@ -32,5 +32,6 @@
     <string name="auth">تسجيل</string>
     <string name="app_language">لغة التطبيق</string>
     <string name="confirm_lbl">تأكيد</string>
+    <string name="pagination_data">بيانات من اكثر من صفحة</string>
 
 </resources>

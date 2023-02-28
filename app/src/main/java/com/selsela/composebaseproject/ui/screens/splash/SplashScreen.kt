@@ -59,7 +59,7 @@ private fun SplashContent(onFinish: () -> Unit) {
                     OvershootInterpolator(4f).getInterpolation(it)
                 })
             )
-            delay(4000)
+            delay(6000)
             onFinish()
         }
 

@@ -63,7 +63,7 @@ fun ComposeBaseProjectTheme(
         SideEffect {
             val window = (view.context as Activity).window
             WindowCompat.setDecorFitsSystemWindows(window, false)
-            window.statusBarColor = Color.WHITE
+            window.statusBarColor = Color.TRANSPARENT
             window.navigationBarColor = Color.WHITE
           //  WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = darkTheme
         }
