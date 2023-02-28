@@ -113,7 +113,11 @@ class MainActivity : AppCompatActivity() {
                     sheetContent = {
                         Spacer(modifier = Modifier.height(1.dp))
                         if (currentBottomSheet != null)
-                            SheetLayout(currentBottomSheet!!, closeSheet)
+                            SheetLayout(
+                                context = this@MainActivity,
+                                currentBottomSheet!!,
+                                closeSheet
+                            )
                     },
                     sheetElevation = 10.dp
                 ) {}

@@ -41,9 +41,8 @@ fun TopBar(
                 if (canNavigateBack) {
                     IconButton(onClick = navigateUp) {
                         Icon(
-                            painter = painterResource(id = R.drawable.baseline_arrow_back_24),
+                            painter = painterResource(id = R.drawable.icon_arrow_left),
                             contentDescription = "back button",
-                            modifier = Modifier.rotate(180f)
                         )
                     }
                 }

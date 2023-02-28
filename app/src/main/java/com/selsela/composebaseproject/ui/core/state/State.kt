@@ -1,5 +1,5 @@
 package com.selsela.composebaseproject.ui.core.state
 
 enum class State {
-    LOADING, SUCCESS, ERROR, IDLE
+    LOADING, SUCCESS, ERROR, IDLE, PAGINATING
 }

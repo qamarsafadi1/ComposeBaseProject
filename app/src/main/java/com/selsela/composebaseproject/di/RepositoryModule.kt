@@ -7,6 +7,8 @@ import com.selsela.composebaseproject.data.remote.categories.repository.Category
 import com.selsela.composebaseproject.data.remote.categories.service.CategoryService
 import com.selsela.composebaseproject.data.remote.config.repository.ConfigurationsRepository
 import com.selsela.composebaseproject.data.remote.config.service.ConfigServiceApi
+import com.selsela.composebaseproject.data.remote.orders.repository.OrderRepository
+import com.selsela.composebaseproject.data.remote.orders.service.OrderService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -40,5 +42,13 @@ object RepositoryModule {
         apiService: CategoryService,
     ): CategoryRepository {
         return CategoryRepository(apiService)
+    }
+
+    @Provides
+    @Singleton
+    fun providerOrderRepository(
+        apiService: OrderService,
+    ): OrderRepository {
+        return OrderRepository(apiService)
     }
 }

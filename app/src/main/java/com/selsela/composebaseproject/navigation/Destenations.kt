@@ -14,7 +14,8 @@ enum class Screens(
     VerifyCode(title = R.string.verify_code),
     Home(title = R.string.home),
     Categories(title = R.string.categories),
-    Details(title = R.string.details)
+    Details(title = R.string.details),
+    Orders(title = R.string.pagination_data)
 }
 
 class NavigationActions(private val navController: NavController) {
@@ -38,7 +39,9 @@ class NavigationActions(private val navController: NavController) {
 
     fun navigateToCategoryDetails(index: Int) {
         navController.navigate(Screens.Details.name+"/$index")
-
+    }
+    fun navigateToPaginatingData() {
+        navController.navigate(Screens.Orders.name)
     }
 
 }

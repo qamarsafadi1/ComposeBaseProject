@@ -6,6 +6,7 @@ import com.selsela.composebaseproject.data.local.PreferenceHelper
 import com.selsela.composebaseproject.data.remote.auth.service.AuthService
 import com.selsela.composebaseproject.data.remote.categories.service.CategoryService
 import com.selsela.composebaseproject.data.remote.config.service.ConfigServiceApi
+import com.selsela.composebaseproject.data.remote.orders.service.OrderService
 import com.selsela.composebaseproject.util.networking.HeaderInterceptor
 import com.selsela.composebaseproject.util.networking.RetrofitBuilder
 import dagger.Module
@@ -43,6 +44,10 @@ object NetworkingModule {
     @Provides
     @Singleton
     fun provideCategoryApi(retrofit: Retrofit): CategoryService = retrofit.create(CategoryService::class.java)
+
+    @Provides
+    @Singleton
+    fun provideOrderApi(retrofit: Retrofit): OrderService = retrofit.create(OrderService::class.java)
 
 
     @Provides

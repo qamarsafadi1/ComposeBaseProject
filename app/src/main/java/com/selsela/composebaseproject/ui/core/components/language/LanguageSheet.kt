@@ -26,9 +26,11 @@ import com.selsela.composebaseproject.ui.core.components.Button
 import com.selsela.composebaseproject.ui.core.components.language.item.LanguageItem
 import com.selsela.composebaseproject.ui.theme.text18
 import com.selsela.composebaseproject.util.LocalUtils.setLocale
+import com.selsela.composebaseproject.util.withDelay
 
 @Composable
-fun LanguageSheet(onClose: () -> Unit,
+fun LanguageSheet(
+    onConfirm: (String) -> Unit,
 ) {
     Box {
         val context = LocalContext.current
@@ -61,12 +63,7 @@ fun LanguageSheet(onClose: () -> Unit,
             Spacer(modifier = Modifier.height(35.dp))
             Button(
                 onClick = {
-                    if (check == 0) {
-                        context.setLocale("ar")
-                    } else {
-                        context.setLocale("en")
-                    }
-                    onClose()
+                    onConfirm(if (check == 0) "ar" else "end")
                 },
                 title = stringResource(R.string.confirm_lbl),
             )

@@ -49,7 +49,7 @@ class AuthViewModel @Inject constructor(
      * Form fields for validation
      */
 
-    val mobile = savedStateHandle.getStateFlow(MOBILE, InputWrapper(inputValue = if (preferences.user != null) preferences.user?.mobile ?: "" else ""))
+    val mobile = savedStateHandle.getStateFlow(MOBILE, InputWrapper(inputValue = if (preferences.user != null) preferences.user?.mobile ?: "567777010" else "567777010"))
     val code = savedStateHandle.getStateFlow(CODE, InputWrapper())
     val password = savedStateHandle.getStateFlow(PASSWORD, InputWrapper())
 

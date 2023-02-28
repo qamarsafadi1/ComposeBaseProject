@@ -61,6 +61,8 @@ fun CategoriesScreen(
                 )
             }
         }
+
+        else -> {}
     }
 }
 

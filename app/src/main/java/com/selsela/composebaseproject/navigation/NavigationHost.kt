@@ -16,6 +16,7 @@ import com.selsela.composebaseproject.ui.screens.categories.CategoryViewModel
 import com.selsela.composebaseproject.ui.screens.categories.details.CategoryDetailsScreen
 import com.selsela.composebaseproject.ui.screens.categories.list.CategoriesScreen
 import com.selsela.composebaseproject.ui.screens.home.HomeScreen
+import com.selsela.composebaseproject.ui.screens.orders.list.OrdersScreen
 import com.selsela.composebaseproject.ui.screens.splash.SplashScreen
 
 @Composable
@@ -38,7 +39,8 @@ fun NavigationHost(
             HomeScreen(
                 onDataClick = navActions::navigateToCategories,
                 onAuthClick = navActions::navigateToLogin,
-                onChangeLanguageClick = { openSheet(BottomSheetScreen.LangaugeSheet) }
+                onChangeLanguageClick = { openSheet(BottomSheetScreen.LangaugeSheet) },
+                onPaginatingDataClick = navActions::navigateToPaginatingData
             )
         }
         composable(Screens.Login.name) {
@@ -47,9 +49,11 @@ fun NavigationHost(
                 goToVerify = navActions::navigateToVerify
             )
         }
+
         composable(Screens.Categories.name) {
             CategoriesScreen(onClick = navActions::navigateToCategoryDetails)
         }
+
         composable(Screens.VerifyCode.name) {
             VerifyScreen(
                 goToHome = navActions::navigateToHome
@@ -75,6 +79,10 @@ fun NavigationHost(
                 index = itemIndex ?: -1,
                 viewModel = parentViewModel
             )
+        }
+
+        composable(Screens.Orders.name) {
+            OrdersScreen()
         }
     }
 }
