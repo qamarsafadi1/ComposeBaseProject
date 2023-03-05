@@ -1,6 +1,7 @@
 package com.selsela.composebaseproject
 
 import android.os.Bundle
+import android.view.Menu
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.layout.Box
@@ -53,7 +54,6 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
-
 
     @OptIn(ExperimentalMaterialApi::class)
     @Composable
