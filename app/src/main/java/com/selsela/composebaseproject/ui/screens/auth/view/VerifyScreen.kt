@@ -18,11 +18,12 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.selsela.composebaseproject.R
+import com.selsela.composebaseproject.data.remote.auth.model.User
 import com.selsela.composebaseproject.ui.core.components.otp.OtpTextField
 import com.selsela.composebaseproject.ui.core.components.otp.Countdown
 import com.selsela.composebaseproject.ui.core.state.State
+import com.selsela.composebaseproject.ui.core.state.UiState
 import com.selsela.composebaseproject.ui.screens.auth.AuthViewModel
-import com.selsela.composebaseproject.ui.screens.auth.state.AuthUiState
 import com.selsela.composebaseproject.ui.theme.Purple40
 import com.selsela.composebaseproject.ui.theme.text11
 import com.selsela.composebaseproject.ui.theme.text12
@@ -42,7 +43,7 @@ fun VerifyScreen(
     val code by viewModel.code.collectAsStateWithLifecycle()
     val mobile by viewModel.mobile.collectAsStateWithLifecycle()
     val isCodeValid by viewModel.isCodeValid.collectAsStateWithLifecycle()
-    val viewState: AuthUiState by viewModel.uiState.collectAsStateLifecycleAware(AuthUiState())
+    val viewState: UiState<User> by viewModel.uiState.collectAsStateLifecycleAware(UiState())
     val context = LocalContext.current
 
     VerifyScreenContent(
@@ -56,10 +57,10 @@ fun VerifyScreen(
      */
 
     EventEffect(
-        event = viewState.onSuccess,
+        event = viewState.onSuccessMessage,
         onConsumed = viewModel::onSuccess
     ) {
-        context.getActivity()?.showSuccessTop(it)
+        context.getActivity()?.showSuccessTop(it ?: "")
         goToHome()
     }
 
@@ -68,8 +69,8 @@ fun VerifyScreen(
         onConsumed = viewModel::onFailure
     ) { error ->
         Common.handleErrors(
-            error.responseMessage,
-            error.errors,
+            error?.responseMessage,
+            error?.errors,
             context.getActivity()
         )
     }
@@ -77,7 +78,7 @@ fun VerifyScreen(
 
 @Composable
 private fun VerifyScreenContent(
-    viewState: AuthUiState,
+    viewState: UiState<User>,
     mobile: InputWrapper,
     code: InputWrapper,
     isCodeValid: Boolean,

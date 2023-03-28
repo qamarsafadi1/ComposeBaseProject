@@ -9,8 +9,7 @@ import androidx.lifecycle.viewModelScope
 import com.selsela.composebaseproject.data.remote.orders.model.Order
 import com.selsela.composebaseproject.data.remote.orders.repository.OrderRepository
 import com.selsela.composebaseproject.ui.core.state.State
-import com.selsela.composebaseproject.ui.screens.orders.state.OrderUiState
-import com.selsela.composebaseproject.util.log
+import com.selsela.composebaseproject.ui.core.state.UiState
 import com.selsela.composebaseproject.util.networking.model.ErrorsData
 import com.selsela.composebaseproject.util.networking.model.Status
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -34,9 +33,9 @@ class OrderViewModel @Inject constructor(
     /**
      * State Flows
      */
-    private val _uiState = MutableStateFlow(OrderUiState())
-    val uiState: StateFlow<OrderUiState> = _uiState.asStateFlow()
-    private var state: OrderUiState
+    private val _uiState = MutableStateFlow(UiState<Order>())
+    val uiState: StateFlow<UiState<Order>> = _uiState.asStateFlow()
+    private var state: UiState<Order>
         get() = _uiState.value
         set(newState) {
             _uiState.update { newState }
@@ -65,17 +64,17 @@ class OrderViewModel @Inject constructor(
                             }
                             if (canPaginate)
                                 page++
-                            OrderUiState(
+                            UiState<Order>(
                                 state = State.SUCCESS,
-                                orders = orderList
+                                dataList = orderList
                             )
                         }
                         Status.LOADING ->
-                            OrderUiState(
+                            UiState<Order>(
                                 state = if (page == 1) State.LOADING else State.PAGINATING
                             )
 
-                        Status.ERROR -> OrderUiState(
+                        Status.ERROR -> UiState<Order>(
                             state = State.ERROR,
                             error = ErrorsData(
                                 result.errors,

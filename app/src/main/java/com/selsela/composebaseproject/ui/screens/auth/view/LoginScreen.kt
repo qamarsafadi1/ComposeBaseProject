@@ -21,11 +21,12 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.selsela.composebaseproject.R
+import com.selsela.composebaseproject.data.remote.auth.model.User
 import com.selsela.composebaseproject.ui.core.components.Button
 import com.selsela.composebaseproject.ui.core.components.InputText
 import com.selsela.composebaseproject.ui.core.state.State
+import com.selsela.composebaseproject.ui.core.state.UiState
 import com.selsela.composebaseproject.ui.screens.auth.AuthViewModel
-import com.selsela.composebaseproject.ui.screens.auth.state.AuthUiState
 import com.selsela.composebaseproject.util.Common
 import com.selsela.composebaseproject.util.InputWrapper
 import com.selsela.composebaseproject.util.collectAsStateLifecycleAware
@@ -44,7 +45,7 @@ fun LoginScreen(
     val mobile by viewModel.mobile.collectAsStateWithLifecycle()
     val password by viewModel.password.collectAsStateWithLifecycle()
     val areInputsValid by viewModel.areInputsValid.collectAsStateWithLifecycle()
-    val viewState: AuthUiState by viewModel.uiState.collectAsStateLifecycleAware(AuthUiState())
+    val viewState: UiState<User> by viewModel.uiState.collectAsStateLifecycleAware(UiState<User>())
     val context = LocalContext.current
 
     LoginScreenContent(
@@ -80,8 +81,8 @@ fun LoginScreen(
         onConsumed = viewModel::onFailure
     ) { error ->
         Common.handleErrors(
-            error.responseMessage,
-            error.errors,
+            error?.responseMessage,
+            error?.errors,
             context.getActivity()
         )
     }
@@ -89,7 +90,7 @@ fun LoginScreen(
 
 @Composable
 private fun LoginScreenContent(
-    viewState: AuthUiState,
+    viewState: UiState<User>,
     mobile: InputWrapper,
     viewModel: AuthViewModel,
     password: InputWrapper,

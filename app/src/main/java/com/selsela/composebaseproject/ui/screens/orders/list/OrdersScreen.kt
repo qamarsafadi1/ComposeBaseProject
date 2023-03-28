@@ -21,9 +21,9 @@ import com.selsela.composebaseproject.data.remote.orders.model.Order
 import com.selsela.composebaseproject.ui.core.components.screen.EmptyView
 import com.selsela.composebaseproject.ui.core.components.screen.LoadingView
 import com.selsela.composebaseproject.ui.core.state.State
+import com.selsela.composebaseproject.ui.core.state.UiState
 import com.selsela.composebaseproject.ui.screens.orders.OrderViewModel
 import com.selsela.composebaseproject.ui.screens.orders.list.item.OrderItem
-import com.selsela.composebaseproject.ui.screens.orders.state.OrderUiState
 import com.selsela.composebaseproject.util.Common
 import com.selsela.composebaseproject.util.collectAsStateLifecycleAware
 import com.selsela.composebaseproject.util.getActivity
@@ -42,8 +42,8 @@ fun OrdersScreen(
                     && viewModel.canPaginate
         }
     }
-    val viewState: OrderUiState by viewModel.uiState.collectAsStateLifecycleAware(
-        OrderUiState()
+    val viewState: UiState<Order> by viewModel.uiState.collectAsStateLifecycleAware(
+        UiState()
     )
 
     LaunchedEffect(Unit) {
@@ -63,7 +63,7 @@ fun OrdersScreen(
 
     when (viewState.state) {
         State.IDLE, State.LOADING -> LoadingView()
-        State.SUCCESS,State.PAGINATING -> OrdersList(lazyColumnListState, orders = viewState.orders)
+        State.SUCCESS,State.PAGINATING -> OrdersList(lazyColumnListState, orders = viewState.dataList?.toMutableList())
         State.ERROR -> {
             viewState.error.let {
                 Common.handleErrors(

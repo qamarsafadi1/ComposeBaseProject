@@ -14,8 +14,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.selsela.composebaseproject.data.remote.categories.model.Service
 import com.selsela.composebaseproject.ui.core.components.AsyncImage
+import com.selsela.composebaseproject.ui.core.state.UiState
 import com.selsela.composebaseproject.ui.screens.categories.CategoryViewModel
-import com.selsela.composebaseproject.ui.screens.categories.state.CategoryUiState
 import com.selsela.composebaseproject.ui.theme.text14White
 import com.selsela.composebaseproject.util.collectAsStateLifecycleAware
 
@@ -24,9 +24,9 @@ fun CategoryDetailsScreen(
     index: Int,
     viewModel: CategoryViewModel
 ) {
-    val viewState: CategoryUiState by viewModel.uiState.collectAsStateLifecycleAware(CategoryUiState())
+    val viewState: UiState<Service> by viewModel.uiState.collectAsStateLifecycleAware(UiState())
 
-    CategoryDetailsContent(viewState.category)
+    CategoryDetailsContent(viewState.data)
 
     LaunchedEffect(key1 = Unit){
         viewModel.getCategoriesDetails(index)

@@ -8,9 +8,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.selsela.composebaseproject.R
 import com.selsela.composebaseproject.data.local.PreferenceHelper.user
+import com.selsela.composebaseproject.data.remote.auth.model.User
 import com.selsela.composebaseproject.data.remote.auth.repository.AuthRepository
 import com.selsela.composebaseproject.ui.core.state.State
-import com.selsela.composebaseproject.ui.screens.auth.state.AuthUiState
+import com.selsela.composebaseproject.ui.core.state.UiState
 import com.selsela.composebaseproject.ui.theme.Red
 import com.selsela.composebaseproject.util.Constants.NOT_VERIFIED
 import com.selsela.composebaseproject.util.InputWrapper
@@ -56,9 +57,9 @@ class AuthViewModel @Inject constructor(
     /**
      * State Flows
      */
-    private val _uiState = MutableStateFlow(AuthUiState())
-    val uiState: StateFlow<AuthUiState> = _uiState.asStateFlow()
-    private var authState: AuthUiState
+    private val _uiState = MutableStateFlow(UiState<User>())
+    val uiState: StateFlow<UiState<User>> = _uiState.asStateFlow()
+    private var authState: UiState<User>
         get() = _uiState.value
         set(newState) {
             _uiState.update { newState }
@@ -151,24 +152,24 @@ class AuthViewModel @Inject constructor(
                     val authUiState = when (result.status) {
                         Status.SUCCESS -> {
                             if (result.data?.status == NOT_VERIFIED) {
-                                AuthUiState(
+                                UiState<User>(
                                     state = State.SUCCESS,
                                     onVerify = triggered(result.data)
                                 )
                             } else {
-                                AuthUiState(
+                                UiState<User>(
                                     state = State.SUCCESS,
-                                    onSuccess = triggered(result.message ?: ""),
+                                    onSuccess = triggered(null),
                                 )
                             }
                         }
 
                         Status.LOADING ->
-                            AuthUiState(
+                            UiState<User>(
                                 state = State.LOADING,
                             )
 
-                        Status.ERROR -> AuthUiState(
+                        Status.ERROR ->  UiState<User>(
                             state = State.ERROR,
                             onFailure = triggered(
                                 ErrorsData(
@@ -192,18 +193,18 @@ class AuthViewModel @Inject constructor(
                 .collect { result ->
                     val authUiState = when (result.status) {
                         Status.SUCCESS -> {
-                                AuthUiState(
+                            UiState<User>(
                                     state = State.SUCCESS,
-                                    onSuccess = triggered(result.message ?: ""),
+                                    onSuccessMessage = triggered(result.message ?: ""),
                                 )
                         }
 
                         Status.LOADING ->
-                            AuthUiState(
+                            UiState<User>(
                                 state = State.LOADING,
                             )
 
-                        Status.ERROR -> AuthUiState(
+                        Status.ERROR ->  UiState<User>(
                             state = State.ERROR,
                             onFailure = triggered(
                                 ErrorsData(

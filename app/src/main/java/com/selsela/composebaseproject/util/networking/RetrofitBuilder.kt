@@ -43,7 +43,9 @@ class RetrofitBuilder @Inject constructor(
                 .request("|==Req==|  ")
                 .response("|==Response==|  ")
                 .build()
-            addInterceptor(loggingInterceptor)
+            if(BuildConfig.DEBUG) {
+                addInterceptor(loggingInterceptor)
+            }
             val auth: Authenticator? = when {
                 authenticator != null -> authenticator
                 else -> null

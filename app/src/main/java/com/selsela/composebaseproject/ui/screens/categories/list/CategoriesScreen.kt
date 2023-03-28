@@ -21,9 +21,9 @@ import com.selsela.composebaseproject.data.remote.categories.model.Service
 import com.selsela.composebaseproject.ui.core.components.screen.EmptyView
 import com.selsela.composebaseproject.ui.core.components.screen.LoadingView
 import com.selsela.composebaseproject.ui.core.state.State
+import com.selsela.composebaseproject.ui.core.state.UiState
 import com.selsela.composebaseproject.ui.screens.categories.CategoryViewModel
 import com.selsela.composebaseproject.ui.screens.categories.list.item.CategoryItem
-import com.selsela.composebaseproject.ui.screens.categories.state.CategoryUiState
 import com.selsela.composebaseproject.util.Common
 import com.selsela.composebaseproject.util.collectAsStateLifecycleAware
 import com.selsela.composebaseproject.util.getActivity
@@ -33,7 +33,7 @@ fun CategoriesScreen(
     viewModel: CategoryViewModel = hiltViewModel(),
     onClick: (Int) -> Unit
 ) {
-    val viewState: CategoryUiState by viewModel.uiState.collectAsStateLifecycleAware(CategoryUiState())
+    val viewState: UiState<Service> by viewModel.uiState.collectAsStateLifecycleAware(UiState())
     val context = LocalContext.current
 
     /**
@@ -51,7 +51,7 @@ fun CategoriesScreen(
 
     when (viewState.state) {
         State.IDLE, State.LOADING -> LoadingView()
-        State.SUCCESS -> CategoriesList(categories = viewState.categories, onClick)
+        State.SUCCESS -> CategoriesList(categories = viewState.dataList, onClick)
         State.ERROR -> {
             viewState.error.let {
                 Common.handleErrors(
