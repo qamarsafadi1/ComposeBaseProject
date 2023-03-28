@@ -47,6 +47,7 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.messaging.FirebaseMessaging
 import com.selsela.composebaseproject.BaseApp.Companion.LocalData
+import com.selsela.composebaseproject.BuildConfig
 import com.selsela.composebaseproject.R
 import com.selsela.composebaseproject.data.local.PreferenceHelper.fcmToken
 import com.selsela.composebaseproject.util.FileHandler.Companion.compressImage
@@ -102,11 +103,13 @@ fun <T> (() -> T).withDelay(delay: Long = 250L) {
 }
 
 fun Any.log(tag: String = "") {
-    if (tag == "") {
-        Log.d("Base: ", this.toString())
-    } else {
-        Log.d("Base$tag", this.toString())
+    if(BuildConfig.DEBUG) {
+        if (tag == "") {
+            Log.d("Base: ", this.toString())
+        } else {
+            Log.d("Base$tag", this.toString())
 
+        }
     }
 }
 

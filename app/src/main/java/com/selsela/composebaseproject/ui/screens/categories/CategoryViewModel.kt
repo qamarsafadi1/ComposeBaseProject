@@ -2,9 +2,10 @@ package com.selsela.composebaseproject.ui.screens.categories
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.selsela.composebaseproject.data.remote.categories.model.Service
 import com.selsela.composebaseproject.data.remote.categories.repository.CategoryRepository
 import com.selsela.composebaseproject.ui.core.state.State
-import com.selsela.composebaseproject.ui.screens.categories.state.CategoryUiState
+import com.selsela.composebaseproject.ui.core.state.UiState
 import com.selsela.composebaseproject.util.networking.model.ErrorsData
 import com.selsela.composebaseproject.util.networking.model.Status
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -13,6 +14,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import java.util.Locale.Category
 import javax.inject.Inject
 
 @HiltViewModel
@@ -25,9 +27,9 @@ class CategoryViewModel @Inject constructor(
     /**
      * State Flows
      */
-    private val _uiState = MutableStateFlow(CategoryUiState())
-    val uiState: StateFlow<CategoryUiState> = _uiState.asStateFlow()
-    private var state: CategoryUiState
+    private val _uiState = MutableStateFlow(UiState<Service>())
+    val uiState: StateFlow<UiState<Service>> = _uiState.asStateFlow()
+    private var state: UiState<Service>
         get() = _uiState.value
         set(newState) {
             _uiState.update { newState }
@@ -47,18 +49,18 @@ class CategoryViewModel @Inject constructor(
                     val categoriesUiState = when (result.status) {
                         Status.SUCCESS -> {
                             isLoaded = true
-                            CategoryUiState(
+                            UiState<Service>(
                                 state = State.SUCCESS,
-                                categories = result.data
+                                dataList = result.data
                             )
                         }
 
                         Status.LOADING ->
-                            CategoryUiState(
+                            UiState<Service>(
                                 state = State.LOADING
                             )
 
-                        Status.ERROR -> CategoryUiState(
+                        Status.ERROR -> UiState<Service>(
                             state = State.ERROR,
                             error = ErrorsData(
                                 result.errors,
@@ -74,10 +76,10 @@ class CategoryViewModel @Inject constructor(
 
     fun getCategoriesDetails(index: Int) {
         val categoriesUiState =
-            CategoryUiState(
+            UiState<Service>(
                 state = State.SUCCESS,
-                category = state.categories?.get(index),
-                categories = state.categories
+                data = state.dataList?.get(index),
+                dataList = state.dataList
             )
         state = categoriesUiState
     }
