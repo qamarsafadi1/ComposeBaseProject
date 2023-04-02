@@ -3,6 +3,9 @@ package com.selsela.composebaseproject.data.remote.auth.model
 
 import com.google.errorprone.annotations.Keep
 import com.google.gson.annotations.SerializedName
+import com.selsela.composebaseproject.BaseApp
+import com.selsela.composebaseproject.data.local.PreferenceHelper.accessToken
+import com.selsela.composebaseproject.data.local.PreferenceHelper.user
 
 @Keep
 data class User(
@@ -34,4 +37,21 @@ data class User(
     val scheduleNotificationBefore: Int = 0,
     @SerializedName("status")
     val status: String = ""
-)
+){
+    companion object{
+        var CurrentUser : User?
+            get() {
+                return BaseApp.LocalData.user
+            }
+            set(value) {
+                BaseApp.LocalData.user = value
+            }
+        var AccessToken : String?
+            get() {
+                return BaseApp.LocalData.accessToken
+            }
+            set(value) {
+                BaseApp.LocalData.accessToken = value
+            }
+    }
+}

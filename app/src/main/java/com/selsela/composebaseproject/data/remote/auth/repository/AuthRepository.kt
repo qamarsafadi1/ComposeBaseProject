@@ -36,9 +36,9 @@ class AuthRepository @Inject constructor(
             body["country_id"] = "1"
             val response = api.auth(body)
             if (response.isSuccessful) {
-                preferences.user = response.body()?.user
+                User.CurrentUser = response.body()?.user
                 if (response.body()?.user?.status != NOT_VERIFIED)
-                    preferences.accessToken = response.body()?.user?.accessToken
+                    User.AccessToken = response.body()?.user?.accessToken
                 handleSuccess(
                     response.body()?.user,
                     response.body()?.responseMessage ?: response.message()
@@ -49,7 +49,7 @@ class AuthRepository @Inject constructor(
                         response.errorBody()?.charStream(),
                         AuthResponse::class.java
                     )
-                    preferences.user = responseUser?.user
+                    User.CurrentUser = responseUser?.user
                     handleSuccess(
                         response.body()?.user,
                         response.body()?.responseMessage ?: response.message()
@@ -80,8 +80,8 @@ class AuthRepository @Inject constructor(
             body["country_id"] = "1"
             val response = api.verifyCode(body)
             if (response.isSuccessful) {
-                preferences.user = response.body()?.user
-                preferences.accessToken = response.body()?.user?.accessToken
+                User.CurrentUser = response.body()?.user
+                User.AccessToken = response.body()?.user?.accessToken
                 handleSuccess(
                     response.body()?.user,
                     response.body()?.responseMessage ?: response.message()
@@ -92,7 +92,7 @@ class AuthRepository @Inject constructor(
                         response.errorBody()?.charStream(),
                         AuthResponse::class.java
                     )
-                    preferences.user = responseUser?.user
+                    User.CurrentUser = responseUser?.user
                     handleSuccess(
                         response.body()?.user,
                         response.body()?.responseMessage ?: response.message()

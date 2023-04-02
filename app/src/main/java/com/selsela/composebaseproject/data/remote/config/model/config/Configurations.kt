@@ -3,6 +3,10 @@ package com.selsela.composebaseproject.data.remote.config.model.config
 
 import com.google.errorprone.annotations.Keep
 import com.google.gson.annotations.SerializedName
+import com.selsela.composebaseproject.BaseApp
+import com.selsela.composebaseproject.data.local.PreferenceHelper.appLocale
+import com.selsela.composebaseproject.data.local.PreferenceHelper.configurations
+
 @Keep
 data class Configurations(
     @SerializedName("address")
@@ -47,4 +51,19 @@ data class Configurations(
     val updateIos: String = "",
     @SerializedName("whatsapp")
     val whatsapp: String = ""
-)
+){
+    companion object{
+        var Config : Configurations?
+            get() {
+                return BaseApp.LocalData.configurations
+            }
+            set(value) {
+                BaseApp.LocalData.configurations = value
+            }
+
+        val Currency : String?
+            get() {
+                return if(BaseApp.LocalData.appLocale == "ar") BaseApp.LocalData.configurations?.currencyAr else BaseApp.LocalData.configurations?.currencyEn
+            }
+    }
+}
