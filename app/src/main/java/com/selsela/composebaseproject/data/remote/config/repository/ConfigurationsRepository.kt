@@ -32,7 +32,7 @@ class ConfigurationsRepository @Inject constructor(
         val data: Flow<Resource<Configurations>> = try {
             val response = api.getConfigurations()
             if (response.isSuccessful) {
-                preferences.configurations = response.body()?.configurations
+                Configurations.Config = response.body()?.configurations
                 handleSuccess(
                     response.body()?.configurations,
                     response.body()?.responseMessage ?: response.message()
